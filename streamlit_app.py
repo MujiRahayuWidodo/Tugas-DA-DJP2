@@ -4,6 +4,47 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from st_aggrid import AgGrid
 
+import numpy as np # linear algebra
+import seaborn as sns
+import itertools
+import warnings
+import xgboost as xgb
+import lightgbm as lgb
+import os
+
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dropout, Dense, BatchNormalization, Input
+from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
+
+from collections import Counter
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+
+from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, AdaBoostRegressor
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.neural_network import MLPRegressor
+from xgboost import XGBRegressor
+from lightgbm import LGBMRegressor
+
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, OrdinalEncoder, LabelEncoder, MinMaxScaler
+from sklearn.metrics import classification_report, confusion_matrix, recall_score, accuracy_score, precision_score
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV
+from imblearn.over_sampling import SMOTE, RandomOverSampler
+from imblearn.under_sampling import RandomUnderSampler
+from scipy.stats import randint
+
+# import lazypredict
+# from lazypredict.Supervised import LazyClassifier, LazyRegressor
+
+warnings.filterwarnings("ignore")
+
 df = pd.read_csv('house_clean.csv')
 
 def main() : 

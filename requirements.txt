@@ -2,17 +2,3 @@ streamlit
 pandas
 matplotlib
 streamlit_aggrid
-numpy
-seaborn
-itertools
-warnings
-gboost
-lightgbm 
-os
-tensorflow 
-collections
-sklearn
-xgboost
-lightgbm
-imblearn
-scipy

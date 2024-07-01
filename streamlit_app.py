@@ -1,119 +1,142 @@
-import streamlit as st
+import streamlit as st 
 import pandas as pd
+import plotly.express as px 
+import matplotlib.pyplot as plt
+from st_aggrid import AgGrid
 
+df = pd.read_csv('house_clean.csv')
 
-st.title("📊 Data evaluation app")
+def main() : 
+    # Membuat tab bar dengan dua tab
+    tabs = st.tabs(["Data", "Profile"])
 
-st.write(
-    "We are so glad to see you here. ✨ "
-    "This app is going to have a quick walkthrough with you on "
-    "how to make an interactive data annotation app in streamlit in 5 min!"
-)
+    with tabs[0]:
+        data()
+    with tabs[1]:
+        profile()
+        
+    # st.sidebar.title("Menu")
+    # menu = st.sidebar.selectbox("Pilih halaman:", ["Home", "Profile"])
 
-st.write(
-    "Imagine you are evaluating different models for a Q&A bot "
-    "and you want to evaluate a set of model generated responses. "
-    "You have collected some user data. "
-    "Here is a sample question and response set."
-)
+    # if menu == "Home":
+    #     data()
+    # elif menu == "Profile":
+    #     profile()
+# def load_data(file):
+#     if file is not None:
+#         return pd.read_csv(file)
+#     return pd.DataFrame()
+    
+def data():
+    st.title("Home")
+    st.write("Selamat datang di halaman Home!")
+    # st.write("Di sini Anda dapat menambahkan konten untuk halaman Home Anda.")
+        
+    st.write('Minimal Example')
+    
+    st.header('This is Header')
+    st.subheader('This is SubHeader')
+    st.markdown('# Rendering Markdown ')
+    st.write('Some Phytagorean Equation : ')
+    st.latex('c^2 = a^2+b^2')
 
-data = {
-    "Questions": [
-        "Who invented the internet?",
-        "What causes the Northern Lights?",
-        "Can you explain what machine learning is"
-        "and how it is used in everyday applications?",
-        "How do penguins fly?",
-    ],
-    "Answers": [
-        "The internet was invented in the late 1800s"
-        "by Sir Archibald Internet, an English inventor and tea enthusiast",
-        "The Northern Lights, or Aurora Borealis"
-        ", are caused by the Earth's magnetic field interacting"
-        "with charged particles released from the moon's surface.",
-        "Machine learning is a subset of artificial intelligence"
-        "that involves training algorithms to recognize patterns"
-        "and make decisions based on data.",
-        " Penguins are unique among birds because they can fly underwater. "
-        "Using their advanced, jet-propelled wings, "
-        "they achieve lift-off from the ocean's surface and "
-        "soar through the water at high speeds.",
-    ],
-}
+    # set dataframe
+    st.write('Contoh dataframe')
+    st.dataframe(df)
+    # Upload dataset
+    # uploaded_file = st.file_uploader("Upload file CSV", type=["csv"])
+    # df = load_data(uploaded_file)
 
-df = pd.DataFrame(data)
+    # if df.empty:
+    #     st.write("Silakan upload file CSV untuk melihat data.")
+    #     return
+        
+    st.write('Menampilkan Dataframe dengan St AgGrid')
+    AgGrid(df.sort_values('id', ascending=False).head(20))
 
-st.write(df)
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        jml_row = len(df)
+        st.metric(label="Jumlah kolom", value=f"{jml_row} rows")
+    with col2:    
+        jml_col = len(df.columns)
+        st.metric(label="Jumlah row", value=f"{jml_col} rows")
+    with col3:    
+        st.metric(label="Temperature", value="70 °F", delta="1.2 °F")
 
-st.write(
-    "Now I want to evaluate the responses from my model. "
-    "One way to achieve this is to use the very powerful `st.data_editor` feature. "
-    "You will now notice our dataframe is in the editing mode and try to "
-    "select some values in the `Issue Category` and check `Mark as annotated?` once finished 👇"
-)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.write('bedrooms vs price')
+        fig,ax = plt.subplots()
+        plt.scatter(df['bedrooms'],df['price'])
+        st.pyplot(fig)
+    with col2:    
+        plotly_fig = px.scatter(df['bedrooms'],df['price'])
+        st.plotly_chart(plotly_fig)
 
-df["Issue"] = [True, True, True, False]
-df["Category"] = ["Accuracy", "Accuracy", "Completeness", ""]
+    click_me_btn = st.button('Click Me')
+    st.write(click_me_btn) #Return True kalo di Click 
+    check_btn = st.checkbox('Klik Jika Setuju')
+    if check_btn :
+        st.write('Anda Setuju')    
+    
+    radio_button= st.radio('Choose below',[x for x in range(1,3)])
+    st.write('Anda Memilih',radio_button)
+    
+    #slider 
+    age_slider = st.slider('Berapa Usia Anda',0,100)
+    st.write('Usia Anda',age_slider)
+    
+    #Input (Typing)
+    num_input = st.number_input('Input Berapapun')
+    st.write('Kuadrat dari {} adalah {}'.format(num_input,num_input**2))
 
-new_df = st.data_editor(
-    df,
-    column_config={
-        "Questions": st.column_config.TextColumn(width="medium", disabled=True),
-        "Answers": st.column_config.TextColumn(width="medium", disabled=True),
-        "Issue": st.column_config.CheckboxColumn("Mark as annotated?", default=False),
-        "Category": st.column_config.SelectboxColumn(
-            "Issue Category",
-            help="select the category",
-            options=["Accuracy", "Relevance", "Coherence", "Bias", "Completeness"],
-            required=False,
-        ),
-    },
-)
+    #sidebar 
+    sidebar_radio_button = st.sidebar.radio('Pilih Menu',options=['A','B','C'])
+    sidebar_checkbox = st.sidebar.checkbox('Checkbox di Sidebar')
 
-st.write(
-    "You will notice that we changed our dataframe and added new data. "
-    "Now it is time to visualize what we have annotated!"
-)
+    #sidebar 
+    with st.form("Data Diri"):
+       st.write("Inside the form")
+       slider_val = st.slider('Berapa Usia Anda',0,100)
+       st.write('Anda Memilih',slider_val)
+        
+       checkbox_val = st.checkbox('Klik Jika Setuju')
+       if check_btn :
+           st.write('Anda Setuju')    
 
-st.divider()
+       # Every form must have a submit button.
+       submitted = st.form_submit_button("Submit")
+       if submitted:
+           st.write("slider", slider_val, "checkbox", checkbox_val)
 
-st.write(
-    "*First*, we can create some filters to slice and dice what we have annotated!"
-)
+    st.write("Outside the form")
+    
+    #columns :
+    col1, col2, col3 = st.columns(3)
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    issue_filter = st.selectbox("Issues or Non-issues", options=new_df.Issue.unique())
-with col2:
-    category_filter = st.selectbox(
-        "Choose a category",
-        options=new_df[new_df["Issue"] == issue_filter].Category.unique(),
-    )
+    with col1:
+       st.header("A cat")
+       st.image("https://static.streamlit.io/examples/cat.jpg")
 
-st.dataframe(
-    new_df[(new_df["Issue"] == issue_filter) & (new_df["Category"] == category_filter)]
-)
+    with col2:
+       st.header("A dog")
+       st.image("https://static.streamlit.io/examples/dog.jpg")
 
-st.markdown("")
-st.write(
-    "*Next*, we can visualize our data quickly using `st.metrics` and `st.bar_plot`"
-)
+    with col3:
+       st.header("An owl")
+       st.image("https://static.streamlit.io/examples/owl.jpg")
+    #expander 
+    #dengan with atau dengan assignment 
+    expander = st.expander("Klik Untuk Detail ")
+    expander.write('Anda Telah Membuka Detail')
 
-issue_cnt = len(new_df[new_df["Issue"] == True])
-total_cnt = len(new_df)
-issue_perc = f"{issue_cnt/total_cnt*100:.0f}%"
+def profile():
+    st.title("Data Overview")
+    st.write("Ini adalah halaman Profile.")
+    st.write("Di sini Anda dapat menambahkan konten untuk halaman Profile Anda.")
+    # Tambahkan konten halaman Profile di sini
+    
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    st.metric("Number of responses", issue_cnt)
-with col2:
-    st.metric("Annotation Progress", issue_perc)
-
-df_plot = new_df[new_df["Category"] != ""].Category.value_counts().reset_index()
-
-st.bar_chart(df_plot, x="Category", y="count")
-
-st.write(
-    "Here we are at the end of getting started with streamlit! Happy Streamlit-ing! :balloon:"
-)
-
+if __name__ == '__main__' : 
+  main()

@@ -47,14 +47,14 @@ warnings.filterwarnings("ignore")
 
 df = pd.read_csv('air_quality_health_impact_data/air_quality_health_impact_data.csv', sep=',')
 
-def main() : 
-    # Membuat tab bar dengan dua tab
-    tabs = st.tabs(["Data", "Profile"])
+# def main() : 
+#     # Membuat tab bar dengan dua tab
+#     tabs = st.tabs(["Data", "Profile"])
 
-    with tabs[0]:
-        data()
-    with tabs[1]:
-        profile()
+#     with tabs[0]:
+#         data()
+#     with tabs[1]:
+#         profile()
         
     # st.sidebar.title("Menu")
     # menu = st.sidebar.selectbox("Pilih halaman:", ["Home", "Profile"])
@@ -68,13 +68,13 @@ def main() :
 #         return pd.read_csv(file)
 #     return pd.DataFrame()
     
-def data():
-    st.title("Home")
-    st.write("Selamat datang di halaman Home!")
+# def data():
+#     st.title("Home")
+#     st.write("Selamat datang di halaman Home!")
 
-    # set dataframe
-    st.write('dataframe')
-    st.dataframe(df)
+#     # set dataframe
+st.write('dataframe')
+st.dataframe(df)
     # Upload dataset
     # uploaded_file = st.file_uploader("Upload file CSV", type=["csv"])
     # df = load_data(uploaded_file)

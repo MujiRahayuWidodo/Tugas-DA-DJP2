@@ -1,8 +1,8 @@
 import streamlit as st 
 import pandas as pd
 # import plotly.express as px 
-import matplotlib.pyplot as plt
-from st_aggrid import AgGrid
+# import matplotlib.pyplot as plt
+# from st_aggrid import AgGrid
 
 # import numpy as np # linear algebra
 # import seaborn as sns
@@ -47,7 +47,7 @@ from st_aggrid import AgGrid
 
 df = pd.read_csv('air_quality_health_impact_data/air_quality_health_impact_data.csv', sep=',')
 
-# def main() : 
+def main() : 
 #     # Membuat tab bar dengan dua tab
 #     tabs = st.tabs(["Data", "Profile"])
 
@@ -73,8 +73,8 @@ df = pd.read_csv('air_quality_health_impact_data/air_quality_health_impact_data.
 #     st.write("Selamat datang di halaman Home!")
 
 #     # set dataframe
-st.write('dataframe')
-st.dataframe(df)
+# st.write('dataframe')
+# st.dataframe(df)
     # Upload dataset
     # uploaded_file = st.file_uploader("Upload file CSV", type=["csv"])
     # df = load_data(uploaded_file)
